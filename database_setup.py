@@ -12,8 +12,8 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-class Category(Base):
-	__tablename__ = 'category'
+class Menu(Base):
+	__tablename__ = 'menu'
 
 	name = Column( String(250), nullable = False)
 	id = Column( Integer, primary_key = True)
@@ -26,8 +26,8 @@ class  MenuItem(Base):
 	id = Column(Integer, primary_key = True)
 	description = Column(String(250))
 	price = Column(String(8))
-	category_id = Column(Integer, ForeignKey('category.id'))
-	category = relationship(Category)
+	menu_id = Column(Integer, ForeignKey('menu.id'))
+	menu = relationship(Menu)
 
 
 engine =  create_engine('sqlite:///maverick.db')
