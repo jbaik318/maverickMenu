@@ -1,6 +1,6 @@
 #! usr/bin/env python
 
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Menu, MenuItem
@@ -10,16 +10,24 @@ app = Flask(__name__)
 engine = create_engine('sqlite:///maverick.db')
 Base.metadata.bind = engine
 DBSession =  sessionmaker(bind = engine)
-sessoin = DBSession()
+session = DBSession()
 
 @app.route('/')
 @app.route('/maverick/')
 def allMenu():
-	return ("shows all menus of maverick")
+	menu_id = session.query(Menu).all()
+	print(menu_id)
+	return render_template('index.html', menu_id = menu_id)
 
-@app.route('/maverick/new')
+@app.route('/maverick/new', methods=['GET','POST'])
 def newMenu():
-	return ("page that creates a new menu")
+	if request.method == 'POST':
+		addMenu = Menu(name = request.form['name'])
+		session.add(addMenu)
+		session.commit()
+		return redirect(url_for('allMenu'))
+	else:
+		return render_template('newmenu.html')
 
 @app.route('/maverick/<int:menu_id>/edit')
 def editMenu(menu_id):
