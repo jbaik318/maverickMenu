@@ -7,11 +7,17 @@
 <body>
 	<h1>Maverick Coffee Menu</h1>
 
+	<a href='{{url_for('newMenu')}}''>Create a new menu</a>
+
 	<div class="container">
 		<div class="row">
 		{% for x in menu_id %}
 			<div class="col-md-3">
-				<a href='{{url_for('allMenuItem', menu_id = x.id)}}'>{{x.name}}</a>
+				<div class="well">
+					<a href="{{url_for('allMenuItem', menu_id = x.id)}}">{{x.name}}</a>
+					<br>
+					<a href="{{url_for('editMenu', menu_id = x.id)}}">edit</a>
+				</div>
 			</div>
 		{% endfor %}
 		</div>

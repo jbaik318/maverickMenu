@@ -29,9 +29,17 @@ def newMenu():
 	else:
 		return render_template('newmenu.html')
 
-@app.route('/maverick/<int:menu_id>/edit')
+@app.route('/maverick/<int:menu_id>/edit', methods =['GET','POST'])
 def editMenu(menu_id):
-	return ("pages that edits menu %s" %menu_id)
+	editedMenu = session.query(Menu).filter_by(id = menu_id).one()
+	if request.method == 'POST':
+		if request.form['name']:
+			editedMenu.name = request.form['name']
+		session.add(editedMenu)
+		session.commit()
+		return redirect(url_for('allMenu'))
+	else:
+		return render_template('editmenu.html', menu_id=menu_id, item=editedMenu)
 
 @app.route('/maverick/<int:menu_id>/delete')
 def deleteMenu(menu_id):
