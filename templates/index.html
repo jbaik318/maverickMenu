@@ -17,6 +17,8 @@
 					<a href="{{url_for('allMenuItem', menu_id = x.id)}}">{{x.name}}</a>
 					<br>
 					<a href="{{url_for('editMenu', menu_id = x.id)}}">edit</a>
+					<a href="{{url_for('deleteMenu', menu_id = x.id)}}">delete</a>
+
 				</div>
 			</div>
 		{% endfor %}
