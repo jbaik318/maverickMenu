@@ -54,17 +54,35 @@ def deleteMenu(menu_id):
 @app.route('/maverick/<int:menu_id>/')
 @app.route('/maverick/<int:menu_id>/menu/')
 def allMenuItem(menu_id):
-	return ("page that displays menu items of Menu %s" %menu_id)
+	menu = session.query(Menu).filter_by(id = menu_id).one()
+	item = session.query(MenuItem).filter_by(menu_id = menu.id)
+	return render_template('menuitem.html', menu = menu, item = item )
+
 
 @app.route('/maverick/<int:menu_id>/new')
-@app.route('/maverick/<int:menu_id>/menu/new')
+@app.route('/maverick/<int:menu_id>/menu/new', methods =['GET','POST'])
 def newMenuItem(menu_id):
-	return ("page that allows user to add new item to menu %s" %menu_id)
-
+	if request.method == 'POST':
+		addItem =  MenuItem(name = request.form['name'], price = request.form['price'], description = request.form['description'], menu_id = menu_id)
+		session.add(addItem)
+		session.commit()
+		return redirect(url_for('allMenuItem', menu_id = menu_id))
+	else:
+		return render_template('newmenuitem.html', menu_id = menu_id)
+'''
 @app.route('/maverick/<int:menu_id>/<int:menuItem_id>')
 def menuItem(menu_id,menuItem_id):
-	return ("page that shows detail description of item %s of menu %s" % (menuItem_id, menu_id))
-
+	menu = session.query(Menu).filter_by(id = menu_id).one()
+	item = session.query(MenuItem).filter_by(id = menuItem_id).one()
+	if request.method == 'POST':
+		if request.form['name']:
+			menu.name = request.form['name']
+		session.add(menu)
+		session.commit()
+		return redirect(url_for('allMenuItem', menu_id = menu_id))
+	else:
+		return ("page that shows detail description of item %s of menu %s" % (menuItem_id, menu_id))
+'''
 @app.route('/maverick/<int:menu_id>/<int:menuItem_id>/edit')
 def  editMenuItem(menu_id, menuItem_id):
 	return ("page that allows user to edit item item %s of menu %s" % (menuItem_id, menu_id))

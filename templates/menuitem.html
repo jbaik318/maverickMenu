@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+</head>
+<body>
+	<h1> {{menu.name}} menu </h1>
+
+	<a href="{{url_for('newMenuItem', menu_id = menu.id)}}">Create new menu item</a>
+
+	<ul>
+	<div class="container">
+		<div class="row">		
+			{% for i in item %}
+			<div class="col-xs-2">
+				<div class="well">
+					<p>{{i.name}}</p>
+					<p>{{i.price}}</p>
+					<p>{{i.description}}</p>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</body>
+</html>

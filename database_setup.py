@@ -20,7 +20,7 @@ class Menu(Base):
 
 
 class  MenuItem(Base):
-	__tablename__ = 'menu_item'
+	__tablename__ = 'menu_itemss'
 
 	name = Column(String(80), nullable = False)
 	id = Column(Integer, primary_key = True)
@@ -29,7 +29,7 @@ class  MenuItem(Base):
 	menu_id = Column(Integer, ForeignKey('menu.id'))
 	menu = relationship(Menu)
 
-
 engine =  create_engine('sqlite:///maverick.db')
 
 Base.metadata.create_all(engine)
+
