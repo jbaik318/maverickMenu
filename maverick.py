@@ -56,7 +56,7 @@ def deleteMenu(menu_id):
 def allMenuItem(menu_id):
 	menu = session.query(Menu).filter_by(id = menu_id).one()
 	item = session.query(MenuItem).filter_by(menu_id = menu.id)
-	return render_template('menuitem.html', menu = menu, item = item )
+	return render_template('menuitem.html', menu = menu , item = item )
 
 
 @app.route('/maverick/<int:menu_id>/new')
@@ -69,27 +69,31 @@ def newMenuItem(menu_id):
 		return redirect(url_for('allMenuItem', menu_id = menu_id))
 	else:
 		return render_template('newmenuitem.html', menu_id = menu_id)
-'''
-@app.route('/maverick/<int:menu_id>/<int:menuItem_id>')
-def menuItem(menu_id,menuItem_id):
-	menu = session.query(Menu).filter_by(id = menu_id).one()
+
+@app.route('/maverick/<int:menu_id>/<int:menuItem_id>/edit', methods = ['GET','POST'])
+def  editMenuItem(menu_id, menuItem_id):
 	item = session.query(MenuItem).filter_by(id = menuItem_id).one()
 	if request.method == 'POST':
 		if request.form['name']:
-			menu.name = request.form['name']
-		session.add(menu)
+			item.name = request.form['name']
+		session.add(item)
 		session.commit()
-		return redirect(url_for('allMenuItem', menu_id = menu_id))
+		return redirect(url_for('allMenuItem', menu_id = menu.id))
 	else:
-		return ("page that shows detail description of item %s of menu %s" % (menuItem_id, menu_id))
-'''
-@app.route('/maverick/<int:menu_id>/<int:menuItem_id>/edit')
-def  editMenuItem(menu_id, menuItem_id):
-	return ("page that allows user to edit item item %s of menu %s" % (menuItem_id, menu_id))
+		return render_template('editmenuitem.html', menu_id = menu_id , menuItem_id = menuItem_id, i = item)
 
-@app.route('/maverick/<int:menu_id>/<int:menuItem_id>/delete')
+@app.route('/maverick/<int:menu_id>/<int:menuItem_id>/delete', methods = ['GET','POST'])
 def  deleteMenuItem(menu_id, menuItem_id):
-	return ("page that allows user to delete item %s of menu %s" % (menuItem_id, menu_id))
+	item = session.query(MenuItem).filter_by(id = menuItem_id).one()
+	if request.method == 'POST':
+		if request.form['name']:
+			item.name = request.form['name']
+		session.add(item)
+		session.commit()
+		return redirect(url_for('allMenuItems', menu_id = menu_id))
+	else:
+		return render_template('deletemenuitem.html', menu_id = menu_id, menuItem_id = menuItem_id)
+	
 
 
 
