@@ -78,7 +78,7 @@ def  editMenuItem(menu_id, menuItem_id):
 			item.name = request.form['name']
 		session.add(item)
 		session.commit()
-		return redirect(url_for('allMenuItem', menu_id = menu.id))
+		return redirect(url_for('allMenuItem', menu_id = menu_id))
 	else:
 		return render_template('editmenuitem.html', menu_id = menu_id , menuItem_id = menuItem_id, i = item)
 
@@ -86,13 +86,11 @@ def  editMenuItem(menu_id, menuItem_id):
 def  deleteMenuItem(menu_id, menuItem_id):
 	item = session.query(MenuItem).filter_by(id = menuItem_id).one()
 	if request.method == 'POST':
-		if request.form['name']:
-			item.name = request.form['name']
-		session.add(item)
-		session.commit()
-		return redirect(url_for('allMenuItems', menu_id = menu_id))
+		session.delete(item)
+		print("item has been deleted")
+		return redirect(url_for('allMenuItem', menu_id = menu_id))
 	else:
-		return render_template('deletemenuitem.html', menu_id = menu_id, menuItem_id = menuItem_id)
+		return render_template('deletemenuitem.html', i = item)
 	
 
 
